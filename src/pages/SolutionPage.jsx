@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ThumbsUp, Eye, ArrowBigUpDash } from 'lucide-react';
 import axios from 'axios';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function SolutionPage() {
     const { solutionId } = useParams();
@@ -13,7 +14,7 @@ export default function SolutionPage() {
         const fetchQuestion = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/solution/${solutionId}`,
+                    `${BASE_URL}/api/solution/${solutionId}`,
                     { withCredentials: true }
                 );
                 setSolutionData(response.data);
@@ -31,7 +32,7 @@ export default function SolutionPage() {
     // const imageUrls = adminSolution.map(sol => sol.solutionImage);
 
     const geSolutions = adminsSolution?.[0]?.solutionImage;
-    console.log(geSolutions)
+    console.log(adminsSolution)
     const solutionExplanation = adminsSolution?.[0]?.solutionExplanation;
     // console.log("adminsolution", adminsSolution);
     // console.log("solutionData", solutionData?.[0].userID._id);
@@ -50,7 +51,7 @@ export default function SolutionPage() {
     const handleUpvote = async (userId, solutionid) => {
 
         const response = await axios.put(
-            `http://localhost:8000/api/solution/updateUpvote/${solutionId}`,
+            `${BASE_URL}/api/solution/updateUpvote/${solutionId}`,
             { SolutionUser: userId },
             { withCredentials: true }
         );
@@ -115,6 +116,7 @@ export default function SolutionPage() {
                                 </div>
                                 <button onClick={()=>setAdminSolution([solution])} className='cursor-pointer'>
                                     <Eye size={20} className='text-gray-400 hover:text-blue-400' />
+                                    
                                 </button>
                             </div>
 

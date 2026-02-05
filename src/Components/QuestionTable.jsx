@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 let questionsData = [];
 try {
-    const response = await axios.get('http://localhost:8000/api/question/v2/all', { withCredentials: true });
+    console.log(BASE_URL)
+    const response = await axios.get(`${BASE_URL}/api/question/v2/all`, { withCredentials: true });
      questionsData = response.data;
     // console.log('Fetched questions:', questionsData);
     
@@ -59,9 +60,9 @@ const QuestionTable = ({ questions = questionsData }) => {
                         onChange={(e) => setSortBy(e.target.value)}
                         className=" text-bold appearance-none pr-4 pl-5 py-2  border border-gray-300 rounded-3xl bg-white text-gray-700 hover:border-gray-400 w-full"
                     >
-                        <option value="id">Sort by ID</option>
-                        <option value="name">Sort by Name</option>
-                        <option value="toughness">Sort by Toughness</option>
+                        <option value="id" className="bg-[#2c3a50] text-white ">Sort by ID</option>
+                        <option value="name" className="bg-[#2c3a50] text-white">Sort by Name</option>
+                        <option value="toughness" className="bg-[#2c3a50] text-white">Sort by Toughness</option>
                     </select>
                     <ChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
                 </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Upload, ChevronsRight, CheckCircle, AlertCircle, CheckCheck } from 'lucide-react';
 import axios from 'axios';
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
 export default function QuestionPage() {
@@ -20,7 +20,7 @@ export default function QuestionPage() {
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/question/${questionId}`,
+          `${BASE_URL}/api/question/${questionId}`,
           { withCredentials: true }
         );
         setQuestionData(response.data);
@@ -41,7 +41,7 @@ export default function QuestionPage() {
       formData.append("questionID", questionId);
 
       await axios.post(
-        "http://localhost:8000/api/solution/upload",
+      `${BASE_URL}/api/solution/upload`,
         formData,
         { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -59,7 +59,7 @@ export default function QuestionPage() {
     try {
       const checkAlreadyUploaded = async () => {
         const response = await axios.get(
-          `http://localhost:8000/api/solution/check/${questionId}`,
+          `${BASE_URL}/api/solution/check/${questionId}`,
           { withCredentials: true }
         );
 
@@ -135,7 +135,7 @@ export default function QuestionPage() {
 
 
           <button onClick={() => navigate(`/solution/${questionId}`)} className=' flex ml-10 bg-[#0f172b] hover:bg-[#2c2d32db] border-2 border-[#2c2d32db] text-white font-bold py-2 pl-10 pr-5 rounded-md cursor-pointer'>
-            View Solution <ChevronsRight className='ml-1 mt-0.5' />
+            View Solution  <ChevronsRight className='ml-1 mt-0.5' />
           </button>
         </div>
       </div>

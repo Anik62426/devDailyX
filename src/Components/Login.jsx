@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Login() {
  
@@ -16,7 +16,7 @@ function Login() {
     const password = e.target.password.value;   
     let response  ;
     try {
-       response = await axios.post('http://localhost:8000/api/auth/login', {
+       response = await axios.post(`${BASE_URL}/api/auth/login`, {
         email,
         password
       }, { withCredentials: true});

@@ -9,6 +9,9 @@ import SolutionPage from "./pages/SolutionPage.jsx";
 import Layout from "./Layout.jsx";
 import PublicRoute from "./routes/PublicRoute.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
