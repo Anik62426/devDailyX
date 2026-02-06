@@ -1,7 +1,9 @@
 import { useState } from "react";
 import SearchBox from "./SearchBox";
 import { User, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";     
+import { useNavigate } from "react-router-dom";   
+import axios from "axios";  
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Header(){
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -12,6 +14,10 @@ function Header(){
         setIsDropdownOpen(false);
          localStorage.removeItem("token");
          localStorage.removeItem("user");
+         const res = axios.get(`${BASE_URL}/logout`)
+         if(res){
+            console.log("Logout Clearly");
+         }
          navigate("/");
         console.log("User logged out");
     };
