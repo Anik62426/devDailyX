@@ -87,7 +87,7 @@ export default function QuestionPage() {
               alt="Question"
               loading="lazy"
               onLoad={() => setImgLoaded(true)}
-              className={`transition-all duration-700 ease-in-out rounded-lg ${
+              className={`transition-all duration-700 ease-in-out rounded-lg max-w-[65%] ${
                 imgLoaded
                   ? "opacity-100 blur-0 scale-100"
                   : "opacity-0 blur-md scale-105 absolute"

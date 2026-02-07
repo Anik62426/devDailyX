@@ -9,6 +9,7 @@ export default function SolutionPage() {
   const { solutionId } = useParams();
   const [solutionData, setSolutionData] = useState([]);
   const [adminsSolution, setAdminSolution] = useState([]);
+  const [adminSolutionName, setAdminSolutionName] = useState(" ")
 
   useEffect(() => {
     const fetchSolutions = async () => {
@@ -21,6 +22,9 @@ export default function SolutionPage() {
 
         const adminSol = res.data?.filter(s => s.userID?.admin === true);
         setAdminSolution(adminSol);
+        setAdminSolutionName(adminSol[0]?.userID?.email)
+        // console.log(adminSol)
+
       } catch (err) {
         console.error("Fetch error:", err);
       }
@@ -28,6 +32,8 @@ export default function SolutionPage() {
 
     fetchSolutions();
   }, [solutionId]);
+
+
 
   const handleUpvote = async (solutionOwnerId, solutionIdInner) => {
     try {
@@ -51,13 +57,15 @@ export default function SolutionPage() {
     }
   };
 
+  console.log(adminSolutionName)
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-10 mx-auto px-4">
 
       {/* Admin Solution */}
       <div className="min-w-[67vh] lg:w-[60%] bg-gradient-to-br from-orange-400 to-red-400 rounded-2xl p-8 shadow-2xl">
         <h2 className="text-2xl font-bold text-white mb-6">
-          {solutionId}. Admin Solution
+          {solutionId}. {adminSolutionName.split("@")[0]}
         </h2>
 
         <div className="bg-slate-900 rounded-xl p-6 shadow-lg">
@@ -106,10 +114,9 @@ export default function SolutionPage() {
                     handleUpvote(solution.userID._id, solution._id)
                   }
                   className={`flex items-center gap-1 px-3 py-1 rounded-full transition-all duration-300 transform hover:scale-110 cursor-pointer
-                    ${
-                      solution.voted
-                        ? 'bg-gradient-to-r from-[#d93900] to-[#d93a0094] text-white shadow-lg'
-                        : 'bg-[#2a3236] text-gray-300'
+                    ${solution.voted
+                      ? 'bg-gradient-to-r from-[#d93900] to-[#d93a0094] text-white shadow-lg'
+                      : 'bg-[#2a3236] text-gray-300'
                     }`}
                 >
                   <ArrowBigUpDash size={16} />
@@ -119,10 +126,13 @@ export default function SolutionPage() {
                 </button>
 
                 <button
-                  onClick={() => setAdminSolution([solution])}
-                  className="cursor-pointer"
+                  onClick={() => {
+                    setAdminSolution([solution]);
+                    setAdminSolutionName(solution?.userID?.email);
+                  }}
+                  className="cursor-pointer flex gap-2 items-center border border-white px-2.5 py-1 rounded-3xl hover:bg-blue-400"
                 >
-                  <Eye size={20} className="text-gray-400 hover:text-blue-400" />
+                  <p className='text-white'>View</p> <Eye size={20} className="text-gray-400  hover:text-blue-400" />
                 </button>
               </div>
             </div>
