@@ -15,38 +15,7 @@ export default function SolutionPage() {
   const [adminsSolution, setAdminSolution] = useState([]);
   const [adminSolutionName, setAdminSolutionName] = useState("");
 
-  useEffect(() => {
-    const fetchSolutions = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/api/solution/${solutionId}`,
-          { withCredentials: true }
-        );
-        setSolutionData(res.data);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
-    };
-
-    fetchSolutions();
-  }, [solutionId]);
-
- 
-  useEffect(() => {
-    if (solutionData.length > 0) {
-      const adminSol = solutionData.filter(s => s.userID?.admin === true);
-      if (adminsSolution.length === 0) {
-        setAdminSolution([adminSol[0]]);
-        setAdminSolutionName(adminSol[0]?.userID?.email || "");
-      } else {
-        const updatedView = solutionData.find(s => s._id === adminsSolution[0]?._id);
-        if (updatedView) setAdminSolution([updatedView]);
-      }
-    }
-  }, [solutionData]);
-
-  
-  const handleUpvote = async (solutionOwnerId, solutionIdInner) => {
+   const handleUpvote = async (solutionOwnerId, solutionIdInner) => {
     try {
       const res = await axios.put(
         `${BASE_URL}/api/solution/updateUpvote/${solutionId}`,
@@ -73,6 +42,39 @@ export default function SolutionPage() {
       console.error("Upvote failed:", err);
     }
   };
+
+  useEffect(() => {
+    const fetchSolutions = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/solution/${solutionId}`,
+          { withCredentials: true }
+        );
+        setSolutionData(res.data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+
+    fetchSolutions();
+  }, [handleUpvote]);
+
+ 
+  useEffect(() => {
+    if (solutionData.length > 0) {
+      const adminSol = solutionData.filter(s => s.userID?.admin === true);
+      if (adminsSolution.length === 0) {
+        setAdminSolution([adminSol[0]]);
+        setAdminSolutionName(adminSol[0]?.userID?.email || "");
+      } else {
+        const updatedView = solutionData.find(s => s._id === adminsSolution[0]?._id);
+        if (updatedView) setAdminSolution([updatedView]);
+      }
+    }
+  }, [solutionData]);
+
+  
+ 
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-10 mx-auto px-4">
