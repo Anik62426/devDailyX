@@ -11,6 +11,7 @@ import PublicRoute from "./routes/PublicRoute.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import axios from "axios";
 import { QuestionsProvider } from "./context/QuestionContext.jsx";
+import { AdminPage } from "./pages/AdminPage.jsx";
 
 axios.defaults.withCredentials = true;
 
@@ -54,9 +55,18 @@ createRoot(document.getElementById("root")).render(
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage/> 
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
-    </Router>
-    </QuestionsProvider>
+      </Router>
+      </QuestionsProvider>
+       
   </StrictMode>
 );

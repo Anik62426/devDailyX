@@ -5,37 +5,37 @@ import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const QuestionTable = ({questions,loading = false,error = " "}) => {
-//   const [questions, setQuestions] = useState([]);
+const QuestionTable = ({ questions, loading = false, error = " " }) => {
+  //   const [questions, setQuestions] = useState([]);
   const [sortBy, setSortBy] = useState("id");
   const [filterToughness, setFilterToughness] = useState("all");
-//   const [error, setError] = useState("");
-//   const [loading, setLoading] = useState(true);
+  //   const [error, setError] = useState("");
+  //   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  
 
-//   useEffect(() => {
-//     const fetchQuestions = async () => {
-//       try {
-//         const res = await axios.get(`${BASE_URL}/api/question/v2/all`, {
-//           withCredentials: true,
-//         });
-//         setQuestions(res.data);
-//       } catch (err) {
-//         if (err.response?.status === 401) {
-//           setError("Session expired. Please login again.");
-//         } else {
-//           setError("Failed to load questions. Please try again later.");
-//         }
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
 
-//     fetchQuestions();
-//   }, []);
-  
+  //   useEffect(() => {
+  //     const fetchQuestions = async () => {
+  //       try {
+  //         const res = await axios.get(`${BASE_URL}/api/question/v2/all`, {
+  //           withCredentials: true,
+  //         });
+  //         setQuestions(res.data);
+  //       } catch (err) {
+  //         if (err.response?.status === 401) {
+  //           setError("Session expired. Please login again.");
+  //         } else {
+  //           setError("Failed to load questions. Please try again later.");
+  //         }
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     fetchQuestions();
+  //   }, []);
+
 
   const getToughnessClass = (toughness) => {
     switch (toughness.toLowerCase()) {
@@ -101,7 +101,12 @@ const QuestionTable = ({questions,loading = false,error = " "}) => {
       </div>
 
       {loading && (
-        <p className="text-white text-center mt-10">Loading questions…</p>
+        <div className="mt-10 space-y-4">
+          <div className="h-6 w-3/4 bg-slate-700 rounded animate-pulse" />
+          <div className="h-48 w-full bg-slate-700 rounded-xl animate-pulse" />
+          <div className="h-4 w-2/3 bg-slate-700 rounded animate-pulse" />
+          <div className="h-4 w-1/2 bg-slate-700 rounded animate-pulse" />
+        </div>
       )}
 
       {error && (
@@ -125,9 +130,8 @@ const QuestionTable = ({questions,loading = false,error = " "}) => {
                 sortedQuestions.map((question, index) => (
                   <tr
                     key={question.id}
-                    className={`text-white h-16 cursor-pointer hover:border hover:rounded-xl ${
-                      index % 2 === 0 ? "bg-[#272727]" : ""
-                    }`}
+                    className={`text-white h-16 cursor-pointer hover:border hover:rounded-xl ${index % 2 === 0 ? "bg-[#272727]" : ""
+                      }`}
                     onClick={() => navigate(`/question/${question.id}`)}
                   >
                     <td className="px-4 py-3">{question.id}</td>

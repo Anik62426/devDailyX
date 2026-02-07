@@ -23,6 +23,7 @@ function Login() {
       }, { withCredentials: true });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      console.log(response.data)
 
       if (response && response.status === 200) {
         navigate('/home');

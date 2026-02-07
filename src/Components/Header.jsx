@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SearchBox from "./SearchBox";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, ShieldUser } from "lucide-react";
 import { useNavigate } from "react-router-dom";   
 import axios from "axios";  
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -23,7 +23,7 @@ function Header(){
     };
 
     const localUser = JSON.parse(localStorage.getItem("user"));
-    // console.log("Local User:", localUser.email);
+    // console.log("Local User:", localUser);
 
     return(
         <>
@@ -55,6 +55,16 @@ function Header(){
                                         <LogOut size={16} />
                                         <span>Logout</span>
                                     </button>
+
+                                    <button
+                                        onClick={()=> navigate("/admin")}
+                                        className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-900 hover:text-red-200 transition-colors duration-200 flex items-center gap-3 group cursor-pointer"
+                                    >
+                                        
+                                        <ShieldUser size={16}/>
+                                        <span>Admin</span>
+                                    </button>
+
                                 </div>
                             </div>
                         )}
