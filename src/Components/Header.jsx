@@ -28,7 +28,7 @@ function Header(){
     return(
         <>
             <div className="sticky min-w-[70vh]  top-0 z-40 h-16 bg-[#282828] flex items-center justify-between px-4 shadow-lg">
-                <button onClick={()=>navigate(-1)} className="text-2xl font-mono text-white font-bold mx-4 cursor-pointer">DevdailyX</button>
+                <button onClick={()=>navigate("/home")} className="text-2xl font-mono text-white font-bold mx-4 cursor-pointer">DevdailyX</button>
                 <div className="flex items-center gap-4">
                     <SearchBox/>
                     <div className="relative">

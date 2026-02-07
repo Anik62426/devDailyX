@@ -6,34 +6,40 @@ import { useNavigate } from 'react-router-dom';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Login() {
- 
-   const navigate = useNavigate();
+
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [SeePassword, setSeePassword] = useState(false);
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
-    const password = e.target.password.value;   
-    let response  ;
+    const password = e.target.password.value;
+    let response;
     try {
-       response = await axios.post(`${BASE_URL}/api/auth/login`, {
+      response = await axios.post(`${BASE_URL}/api/auth/login`, {
         email,
         password
-      }, { withCredentials: true});
+      }, { withCredentials: true });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      if(response && response.status === 200){
+
+      if (response && response.status === 200) {
         navigate('/home');
       }
       console.log('Login successful:', response.data);
     } catch (error) {
-      console.error('Login failed:', error);
-    }   
+      if (error.response && error.response.status === 401) {
+        setError(error.response.data.message || "Wrong email or password");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
   }
 
- 
 
-  
+
+
 
 
   return (
@@ -51,7 +57,7 @@ function Login() {
                 onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6">
                 <div>
-                
+
                   <input
                     type="email"
                     name="email"
@@ -63,7 +69,7 @@ function Login() {
                 </div>
 
                 <div className='flex relative'>
-                  
+
                   <input
                     type={SeePassword ? "text" : "password"}
                     name="password"
@@ -77,12 +83,20 @@ function Login() {
                   </button>
                 </div>
 
+                {error && (
+                  <p className="text-red-500 mt-2 text-sm uppercase">
+                    {error}
+                  </p>
+                )}
+
+
                 <button
                   type="submit"
                   className="w-full text-white bg-[#0067b8] hover:bg-[#0863a9] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer"
                 >
                   Sign in
                 </button>
+                
               </form>
             </div>
           </div>

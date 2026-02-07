@@ -10,11 +10,13 @@ import Layout from "./Layout.jsx";
 import PublicRoute from "./routes/PublicRoute.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import axios from "axios";
+import { QuestionsProvider } from "./context/QuestionContext.jsx";
 
 axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <QuestionsProvider>
     <Router>
       <Routes>
         <Route
@@ -55,5 +57,6 @@ createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </Router>
+    </QuestionsProvider>
   </StrictMode>
 );
