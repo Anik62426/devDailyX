@@ -16,6 +16,7 @@ export default function QuestionPage() {
 
   const navigate = useNavigate();
 
+  // Fetch Question Details
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -31,26 +32,7 @@ export default function QuestionPage() {
     fetchQuestion();
   }, [questionId]);
 
-  const handleUpload = async (selectedFile) => {
-    try {
-      const formData = new FormData();
-      formData.append("solutionImage", selectedFile);
-      formData.append("questionID", questionId);
-
-      await axios.post(
-        `${BASE_URL}/api/solution/upload`,
-        formData,
-        { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
-      );
-    } catch (err) {
-      setuploadMessage(err.response?.data || err.message);
-      if (err.response?.data?.message === "already") {
-        setAlreadyUploaded(true);
-        return;
-      }
-    }
-  };
-
+  // Check if user already uploaded a solution for this question
   useEffect(() => {
     const checkAlreadyUploaded = async () => {
       try {
@@ -68,6 +50,30 @@ export default function QuestionPage() {
     checkAlreadyUploaded();
   }, [questionId]);
 
+  // Upload Logic
+  const handleUpload = async (selectedFile) => {
+    try {
+      const formData = new FormData();
+      formData.append("solutionImage", selectedFile);
+      formData.append("questionID", questionId);
+
+      const res = await axios.post(
+        `${BASE_URL}/api/solution/upload`,
+        formData,
+        { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      // Trigger "Already Uploaded" state on success
+      setAlreadyUploaded(true);
+      
+    } catch (err) {
+      setuploadMessage(err.response?.data?.message || err.message);
+      if (err.response?.data?.message === "already") {
+        setAlreadyUploaded(true);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col mt-10 min-w-[70vh] bg-gradient-to-br from-orange-400 to-red-400 rounded-2xl p-8 items-center justify-center shadow-2xl">
       <div className="mt-10 w-[90%] h-[85%] bg-slate-900 rounded-2xl p-8 flex flex-col shadow-xl">
@@ -75,7 +81,6 @@ export default function QuestionPage() {
           {questionId}. {questionData?.Name || 'Question Title'}
         </h1>
 
-        {/* Image Loader */}
         <div className="relative w-full flex justify-center">
           {!imgLoaded && (
             <div className="w-full h-[300px] bg-slate-700 animate-pulse rounded-lg" />
@@ -83,7 +88,8 @@ export default function QuestionPage() {
 
           {questionData?.questionImage && (
             <img
-              src={questionData.questionImage}
+              // Force HTTPS for Cloudinary
+              src={questionData.questionImage.replace("http://", "https://")}
               alt="Question"
               loading="lazy"
               onLoad={() => setImgLoaded(true)}
@@ -101,12 +107,12 @@ export default function QuestionPage() {
         <button
           disabled={alreadyUploaded || isUploading}
           type="button"
-          className="relative flex items-center bg-white text-[#0f172b] hover:bg-[#e9eef4] border-2 border-[#e9eef4] font-bold py-2 px-6 rounded-md cursor-pointer overflow-hidden"
+          className="relative flex items-center bg-white text-[#0f172b] disabled:bg-gray-200 disabled:text-gray-500 hover:bg-[#e9eef4] border-2 border-[#e9eef4] font-bold py-2 px-6 rounded-md cursor-pointer overflow-hidden transition-colors"
         >
           {alreadyUploaded ? (
             <>
               <span className="ml-2 mt-0.5">Already Uploaded</span>
-              <CheckCheck className="ml-2 mt-0.5" />
+              <CheckCheck className="ml-2 mt-0.5 text-green-600" />
             </>
           ) : (
             <>
@@ -120,7 +126,7 @@ export default function QuestionPage() {
               )}
 
               <input
-                disabled={isUploading}
+                disabled={isUploading || alreadyUploaded}
                 type="file"
                 className="absolute inset-0 opacity-0 cursor-pointer"
                 onChange={async (e) => {

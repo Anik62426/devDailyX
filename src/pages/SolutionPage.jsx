@@ -4,7 +4,10 @@ import { Eye, ArrowBigUpDash } from 'lucide-react';
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const CURRENT_USER_ID = "69269712ea9a03d8cc3ec8bc"; 
+const storedUser = localStorage.getItem("user");
+const userData = storedUser ? JSON.parse(storedUser) : null;
+const CURRENT_USER_ID = userData?.id || userData?._id;
+
 
 export default function SolutionPage() {
   const { solutionId } = useParams();
