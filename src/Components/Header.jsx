@@ -23,7 +23,8 @@ function Header(){
     };
 
     const localUser = JSON.parse(localStorage.getItem("user"));
-    // console.log("Local User:", localUser);
+     const adminVerify = localUser?.admin
+    // console.log("Local User:", localUser.user.admin);
 
     return(
         <>
@@ -56,7 +57,7 @@ function Header(){
                                         <span>Logout</span>
                                     </button>
 
-                                    <button
+                                    {adminVerify && <button
                                         onClick={()=> navigate("/admin")}
                                         className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-900 hover:text-red-200 transition-colors duration-200 flex items-center gap-3 group cursor-pointer"
                                     >
@@ -64,7 +65,7 @@ function Header(){
                                         <ShieldUser size={16}/>
                                         <span>Admin</span>
                                     </button>
-
+}
                                 </div>
                             </div>
                         )}
